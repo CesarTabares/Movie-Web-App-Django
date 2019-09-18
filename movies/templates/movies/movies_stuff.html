@@ -1,0 +1,89 @@
+<!DOCTYPE>
+{% load static %} <!-- debemos cargar la carpeta static e incluirla dentro de la carpeta movies(mover manualmente)-->
+<html>
+	<head>
+
+        <!-- cargar todas las librerias css que aplicaran a nuestro codigo -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.css" integrity="sha256-piqEf7Ap7CMps8krDQsSOTZgF+MU/0MPyPW2enj5I40=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU=" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="{% static 'movies/app.css' %}" />
+
+	</head>
+    <body>
+    	<div class="wrapper">
+    		<nav class='nav'>
+    			<div class='container'>
+    				<div class='nav__menu'>
+    					<a href="/" class='nav__header'>Clever Movie</a>
+                        <div class='col-md-5 pull-right'>
+                        	<form action="" class='form-inline' name='search'>
+                        		<div class='form-group'>
+                        			<input type="text" name='query' class='form-control' value='{{request.GET.query}}' />
+                                    <input type="submit" class='btn btn-primary' value='Search'/>
+                        		</div>
+                        	</form>
+                        </div>
+                        <button type='button' class='btn btn-primary pull-right' data-toggle='modal' data-target='#modal-create'>
+                            Create
+                        </button>
+    				</div>
+    			</div>
+    		</nav>
+
+            <section class='result'>
+            	<div class='container'>
+
+                    <!-- show notifications (if any) -->
+                    {% if messages %}
+                    	{% for message in messages %}
+                    		<div class='alert alert-{{message.tags}}'>
+                    			<a href="#" class='close' data-dismiss='alert'>&times;</a>
+                    			{{message}}
+                    		</div>
+
+                    	{% endfor %}
+                    {% endif %}
+
+                    <!-- show all movies -->
+
+
+            		<div class='movies'>
+            			{% for movie in search_result %}
+                        	<div class='movies__item'>
+                                <i class='movies__item-star fas fa-star hide'></i>
+                                <p class='movies__item-rating hide'>{{movie.fields.Rating}}/10</p>
+                                <button type='button' class='movies__item-expander hide' data-toggle='modal' data-target='#modal-{{movie.id}}'>View Details</button> <!-- movie id , se coloca asi para que sea dinamico, para que tome el id de cada pelicula-->
+                               	<img class= 'movies__item-image' src="{{movie.fields.Pictures.0.url}}" alt="" />
+                                <div class='movies__item-title'>
+                                    <p>{{movie.fields.Name}}</p>
+                                </div>
+                        	</div>
+                        	{% include 'movies/detail-modal.html'%}
+                        	{% include 'movies/edit-modal.html'%}
+
+                        {% endfor %}
+            		</div>
+            	</div>
+            </section>
+    	</div>
+
+        {% include 'movies/create-modal.html' %} <!-- lo que hace es te codigo es incluir todo lo que esta en el html modal
+		y ponerlo aca abajo, seria lo mismo no crear el archivo y copiarlo todo aca ( es mas facil de leer y editar) -->
+
+        <!-- Javascripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/popper.min.js" integrity="sha256-1XfFQxRfNvDJW3FdZ+xlo2SbodG2+rFArw6XsVzu3bc=" crossorigin="anonymous"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <script src={% static 'movies/app.js' %}></script>
+
+
+
+    </body>
+
+
+</html>

@@ -1,0 +1,19 @@
+<html>
+	<body>
+		<form action="" name='search'>
+
+            <input type="text" name='query'/>
+            <input type="submit" value='Search' /> <!-- este submit , va hacer que lo que enviemos en el input, se almacene en la url 			como query=input  , y explicitamente pone query pq asi es el name del input-->
+		</form>
+<!-- este codigo se correra en django, pq en html no se permiten hacer for o etc
+esto es llamado un lenguaje django templating-->
+		{% for movie in search_result %}
+			<p>{{movie.fields.Name}}</p>
+			<img src='{{movie.fields.Pictures.0.url}}' alt=''>
+		{% endfor %}
+
+
+
+	</body>
+</html>
+
