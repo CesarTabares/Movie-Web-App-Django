@@ -5,8 +5,12 @@ import os
 
 #debemos hablar a la API de Air Table y conectarnos
 
-AT = Airtable(os.environ.get('AIRTABLE_MOVIESTABLE_BASE_ID'),'Movies',
-             api_key=os.environ.get('AIRTABLE_API_KEY '))
+AIRTABLE_API_KEY='keyeTFWCn9H7zwNRG'  #esto se pego en esta parte pq corriendo la app de manera local generaba un error, esto implico
+# en las lineas de abajo de AT=.... luego del get, complementar con estas variables.
+AIRTABLE_MOVIESTABLE_BASE_ID='appe0PgrgJID0IYe2'
+
+AT = Airtable(os.environ.get('AIRTABLE_MOVIESTABLE_BASE_ID', AIRTABLE_MOVIESTABLE_BASE_ID),'Movies',
+             api_key=os.environ.get('AIRTABLE_API_KEY ',AIRTABLE_API_KEY))
 
 # Create your views here.
 def home_page(request):
@@ -64,7 +68,3 @@ def delete(request,movie_id):
     except Exception as e:
         messages.warning(request,'Got an error when trying to delete a movie: {}'.format(e))
     return redirect('/')
-
-
-
-
